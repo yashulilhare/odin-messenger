@@ -1,0 +1,25 @@
+{
+  "name": "odin-messenger",
+  "version": "1.0.0",
+  "description": "A realtime chat application similar to Telegram, WhatsApp and other",
+  "private": true,
+  "main": "index.js",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "yashulilhare",
+  "license": "ISC",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^11.1.1",
+      "onFail": "download"
+    }
+  },
+  "type": "module"
+}
