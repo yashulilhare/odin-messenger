@@ -15,7 +15,8 @@
     "lint": "turbo run lint",
     "lint:fix": "eslint . --fix",
     "format": "prettier . --write",
-    "typecheck": "turbo run typecheck"
+    "typecheck": "turbo run typecheck",
+    "prepare": "husky"
   },
   "keywords": [],
   "author": "yashulilhare",
@@ -34,8 +35,16 @@
     "@typescript-eslint/parser": "^8.59.3",
     "eslint": "^9.39.4",
     "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.4",
     "prettier": "^3.8.3",
     "turbo": "^2.9.14",
     "typescript": "~6.0.3"
+  },
+  "lint-staged": {
+    ".{js,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   }
 }
