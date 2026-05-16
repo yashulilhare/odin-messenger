@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum AttachmentType {
+  IMAGE
+  VIDEO
+  PDF
+}
+
+model User {
+  id         String   @id @default(uuid())
+  username   String   @unique
+  firstName  String
+  lastName   String?
+  about      String?
+  password   String
+  createAt   DateTime @default(now())
+  profileUrl String?
+  isGuest    Boolean  @default(false)
+
+  messages Message[]
+  rooms    Room[]
+
+  friends  User[] @relation("UserFriends")
+  friendOf User[] @relation("UserFriends")
+
+  administeredRooms Room[] @relation("RoomAdmin")
+}
+
+model Room {
+  id        String   @id @default(uuid())
+  name      String?
+  about     String?
+  isGroup   Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  users    User[]
+  messages Message[]
+
+  adminId String?
+  admin   User?   @relation("RoomAdmin", fields: [adminId], references: [id])
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  content   String
+  createdAt DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  roomId String
+  room   Room   @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  attachMents AttachMent[]
+}
+
+model AttachMent {
+  id   String         @id @default(uuid())
+  type AttachmentType @default(IMAGE)
+  url  String
+
+  messageId String
+  message   Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+}

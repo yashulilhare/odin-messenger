@@ -2,7 +2,7 @@
   "extends": "../../packages/config/tsconfig/node.json",
   "compilerOptions": {
     "strict": true,
-    "rootDir": "src",
+    "rootDir": "/",
     "outDir": "dist",
     "paths": {
       "@/*": ["./src/*"],
@@ -14,7 +14,8 @@
     /* Linting */
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "erasableSyntaxOnly": true
+    "erasableSyntaxOnly": true,
+    "ignoreDeprecations": "6.0"
   },
   "include": ["src"]
 }
