@@ -1,12 +1,12 @@
 import { createBrowserRouter } from 'react-router-dom';
 import type { RouteObject } from 'react-router-dom';
 
-import AppLoading from './components/loader/AppLoading';
+import MainLayout from './layouts/MainLayout';
 
 const routes: RouteObject[] = [
   {
     path: '/',
-    element: <AppLoading />,
+    element: <MainLayout />,
   },
 ];
 
