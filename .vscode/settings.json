@@ -1,9 +1,20 @@
 {
-  "editor.formatOnSave": true,
+  "editor.quickSuggestions": {
+    "strings": "on"
+  },
 
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
 
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "always"
+  "tailwindCSS.includeLanguages": {
+    "typescript": "javascript",
+    "typescriptreact": "javascript"
+  },
+
+  "tailwindCSS.classFunctions": ["cn", "clsx", "cva"],
+
+  "tailwindCSS.experimental.configFile": {
+    "apps/web/src/index.css": "apps/web/src/**"
   }
 }
