@@ -1,14 +1,9 @@
-import { Outlet } from 'react-router-dom';
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 import Logo from '@/components/ui/Logo';
 import useInitAuth from '@/hooks/useInitAuth';
 import AppLoading from '@/components/loader/AppLoading';
-
-// preventing auto downloads of LandingPage as it is only used if user is no logged in.
-const LandingPage = lazy(() => {
-  return import('@/pages/LandingPage');
-});
 
 import { cn } from '@/utils/cn';
 import Footer from '@/components/footer/Footer';
@@ -16,6 +11,7 @@ import Footer from '@/components/footer/Footer';
 const MainLayout = () => {
   const [customLoading, setCustomLoading] = useState(true);
   const { isLoading, initAuthData } = useInitAuth();
+  const navigate = useNavigate();
 
   // use 5 second of custom delay to prevent flash of render for the loading screen.
   useEffect(() => {
@@ -27,7 +23,16 @@ const MainLayout = () => {
     };
   }, []);
 
-  console.log('rendered');
+  useEffect(() => {
+    if (initAuthData) {
+      if (!initAuthData.success) {
+        navigate('auth');
+      }
+    }
+  }, [initAuthData]);
+
+  const showLoadingScreen = isLoading || customLoading;
+
   return (
     <>
       <div
@@ -39,15 +44,13 @@ const MainLayout = () => {
           <Logo />
         </header>
 
-        {isLoading || (customLoading && <AppLoading />)}
-        {!isLoading && !customLoading && !initAuthData?.success && (
-          <Suspense fallback={<AppLoading />}>
-            <LandingPage />
-          </Suspense>
+        {showLoadingScreen ? (
+          <AppLoading />
+        ) : (
+          <Outlet context={{ user: initAuthData }} />
         )}
-        <Outlet />
       </div>
-      {!isLoading && !customLoading && <Footer />}
+      {!showLoadingScreen && <Footer />}
     </>
   );
 };
