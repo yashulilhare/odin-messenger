@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser';
 
 import me from '@/routes/me.route.js';
 import corsConfig from '@/config/cors.js';
+import globalErrorHandler from './utils/globalErrorHandler.js';
 
 const app = express();
 
@@ -20,5 +21,7 @@ if (!frontend) throw new Error('No environment variable set for FRONTEND_URL');
 
 app.use(cors({ ...corsConfig, origin: frontend }));
 app.use('/me', me);
+
+app.use(globalErrorHandler);
 
 export default app;
