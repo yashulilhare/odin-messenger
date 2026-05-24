@@ -5,10 +5,12 @@ import handleValidationErrors from '@/middlewares/validate.middleware.js';
 
 const authRouter = Router();
 
-authRouter.post('login', controller.login);
+authRouter.post('/login', controller.login);
 authRouter.post(
-  'signup',
+  '/signup',
   validateSignup,
   handleValidationErrors,
   controller.signup,
 );
+
+export default authRouter

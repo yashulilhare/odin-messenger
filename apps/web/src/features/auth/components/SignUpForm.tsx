@@ -1,13 +1,29 @@
 import { cn } from '@/utils/cn';
 import FormGroup from '@/components/partials/FormGroup';
+import useSignUp from '../hooks/useSignUp';
+// import type { SignUpData } from '@shared/src/types/auth-data-types';
 
 const SignUpForm = () => {
+  const { isWaiting, handleSignUp } = useSignUp();
   return (
     <>
       <form
         autoComplete="on"
-        method="POST"
         className={cn('flex flex-col gap-3 my-5 p-6 pb-0')}
+        onSubmit={(e) => {
+          e.preventDefault();
+          const formData = new FormData(e.target);
+          const firstName = formData.get('firstName') as string;
+          const lastName = formData.get('lastName') as string;
+          const username = formData.get('username') as string;
+          const password = formData.get('password') as string;
+          handleSignUp({
+            firstName,
+            lastName,
+            username,
+            password,
+          });
+        }}
       >
         <FormGroup
           type="text"
@@ -45,6 +61,7 @@ const SignUpForm = () => {
           className={cn(
             'hover:brightness-110 border w-max px-4 rounded-lg bg-sky-500 text-white border-white font-bold py-1',
           )}
+          disabled={isWaiting}
         >
           Sign Up
         </button>

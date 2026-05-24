@@ -9,7 +9,11 @@ const handleValidationErrors = (
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    return res.status(400).json({
+      errorName: 'validation',
+      errorsArray: errors.array(),
+      message: 'Data provided for authentication were invalid.',
+    });
   }
 
   next();

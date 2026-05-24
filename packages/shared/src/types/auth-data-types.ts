@@ -5,22 +5,50 @@ interface SignUpData {
   password: string;
 }
 
-// todo: update these empty interfaces with required once;
-interface SignUpAuthError {}
+interface AuthError {
+  message: string;
+  errorName: 'auth';
+  name?: 'TokenExpiredError' | string;
+  stack?: string | undefined;
+}
+
+interface ValidationError {
+  message: string;
+  errorName: 'validation';
+  errorsArray: ValidationErrorObject[];
+}
+interface ValidationErrorObject {
+  type: string;
+  value: string;
+  msg: string;
+  path: string;
+  location: string;
+}
 
 interface LoginData {
   username: string;
   password: string;
 }
 
-interface LoginAuthError {}
+interface AuthSuccessResponse {
+  message: string;
+  user: {
+    id: string;
+    username: string;
+    firstName: string;
+    lastName?: string;
+    isGuest: boolean;
+    about?: string;
+    profileUrl?: string;
+  };
+}
 
-interface AuthSuccessResponse {}
+type AuthErrorResponse = ValidationError | AuthError;
 
 export type {
   SignUpData,
-  SignUpAuthError,
+  AuthError,
   AuthSuccessResponse,
   LoginData,
-  LoginAuthError,
+  AuthErrorResponse,
 };
