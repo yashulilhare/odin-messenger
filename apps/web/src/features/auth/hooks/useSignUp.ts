@@ -6,11 +6,18 @@ import type {
   SignUpData,
   AuthSuccessResponse,
 } from '@shared/src/types/auth-data-types';
+import type {
+  GlobalErrorObject,
+  CatchBlockError,
+} from '@shared/src/types/global-types';
+
 import { useNavigate } from 'react-router-dom';
 
 const useSignUp = () => {
   const [isWaiting, setIsWaiting] = useState(false);
-  const [error, setError] = useState<AuthErrorResponse | null>(null);
+  const [error, setError] = useState<
+    AuthErrorResponse | GlobalErrorObject | CatchBlockError | null
+  >(null);
   const navigate = useNavigate();
 
   const handleSignUp = async (data: SignUpData) => {
@@ -21,7 +28,9 @@ const useSignUp = () => {
       const res = await signup(data);
 
       if (!res.ok) {
-        const signupError = (await res.json()) as AuthErrorResponse;
+        const signupError = (await res.json()) as
+          | AuthErrorResponse
+          | GlobalErrorObject;
         setError(signupError);
         return;
       }
@@ -33,7 +42,15 @@ const useSignUp = () => {
 
       navigate('/');
     } catch (err) {
-      // todo: check if err is instance of any of the browser thrown error and show appropriate message to use;
+      if (err instanceof Error) {
+        console.error(err.message);
+        console.log(err.stack);
+        setError({
+          errorName: 'catch-block',
+          message: err.message,
+          name: err.name,
+        });
+      }
     } finally {
       setIsWaiting(false);
     }

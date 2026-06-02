@@ -14,6 +14,7 @@ interface FormGroupProps {
   autoComplete?: HTMLInputAutoCompleteAttribute;
   isRequired?: boolean;
   regEx?: string;
+  errorMessage?: string;
 }
 
 const FormGroup = ({
@@ -24,10 +25,14 @@ const FormGroup = ({
   divClass,
   autoComplete,
   isRequired,
-  regEx
+  regEx,
+  errorMessage,
 }: FormGroupProps) => {
   return (
     <div className={cn(divClass)}>
+      {errorMessage && (
+        <p className="m-0 my-1 text-sm text-red-500">! {errorMessage}</p>
+      )}
       <input
         type={type}
         name={name}

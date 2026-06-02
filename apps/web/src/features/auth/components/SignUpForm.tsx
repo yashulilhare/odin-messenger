@@ -1,10 +1,12 @@
 import { cn } from '@/utils/cn';
 import FormGroup from '@/components/partials/FormGroup';
 import useSignUp from '../hooks/useSignUp';
+import { signUpData } from '@/constants/auth-form-data';
+import { Link } from 'react-router-dom';
 // import type { SignUpData } from '@shared/src/types/auth-data-types';
 
 const SignUpForm = () => {
-  const { isWaiting, handleSignUp } = useSignUp();
+  const { isWaiting, handleSignUp, error } = useSignUp();
   return (
     <>
       <form
@@ -25,33 +27,25 @@ const SignUpForm = () => {
           });
         }}
       >
-        <FormGroup
-          type="text"
-          name="firstName"
-          placeholder="First Name"
-          autoComplete="name"
-          isRequired={true}
-        />
-        <FormGroup
-          type="text"
-          name="lastName"
-          placeholder="Last Name (optional)"
-        />
-        <FormGroup
-          type="text"
-          name="username"
-          placeholder="choose yourself a username"
-          autoComplete="username"
-          isRequired={true}
-        />
-        <FormGroup
-          type="password"
-          name="password"
-          placeholder="password"
-          autoComplete="new-password"
-          isRequired={true}
-          regEx="^(?=.*[a-zA-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{5,}$"
-        />
+        {signUpData.map((field) => {
+          return (
+            <FormGroup
+              key={field.name}
+              type={field.type}
+              name={field.name}
+              placeholder={field.placeholder}
+              isRequired={field.isRequired}
+              autoComplete={field.autoComplete}
+              regEx={field.regEx}
+              errorMessage={
+                error && error.errorName === 'validation'
+                  ? error.errorsArray.find((i) => i.path === field.name)?.msg
+                  : undefined
+              }
+            ></FormGroup>
+          );
+        })}
+
         <p className={cn('italic text-sm')}>
           Note: Password must more than 5 in length and should contain at least
           1 letter, 1 number, 1 symbol!
@@ -66,7 +60,7 @@ const SignUpForm = () => {
           Sign Up
         </button>
         <p>
-          Already have an account? <a href="">Login here</a>
+          Already have an account? <Link to="/auth/login">Login here</Link>
         </p>
       </form>
     </>

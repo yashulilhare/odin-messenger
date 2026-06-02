@@ -1,5 +1,6 @@
 import { cn } from '@/utils/cn';
 import FormGroup from '@/components/partials/FormGroup';
+import { Link } from 'react-router-dom';
 
 const LoginForm = () => {
   return (
@@ -36,7 +37,7 @@ const LoginForm = () => {
           Log In
         </button>
         <p>
-          Doesn't have an account? <a href="">Sign up here</a>
+          Doesn't have an account? <Link to={'/auth/signup'}>Sign Up here</Link>
         </p>
       </form>
     </>

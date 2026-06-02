@@ -8,4 +8,11 @@ interface GlobalErrorObject {
   name?: string;
 }
 
-export type { GlobalErrorObject };
+// this interface is for rejected promise caught error basic format used when fetching data
+interface CatchBlockError {
+  name?: string;
+  errorName: 'catch-block';
+  message: string;
+  cause?: string;
+}
+export type { GlobalErrorObject, CatchBlockError };

@@ -37,7 +37,7 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
       (err, token) => {
         if (err) {
           console.log(err);
-          if ((err.name = 'TokenExpiredError')) {
+          if (err.name === 'TokenExpiredError') {
             return res.status(401).json({
               name: err.name,
               message: 'Your session has expired, please log in again.',
@@ -53,12 +53,13 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
           });
         }
 
-        // todo: send more initial information on  signup so there will not be
-        // todo: need to login again.
+        // todo: send more initial information on  signup so there will not be  need to login again.
+
         res
           .cookie('token', token, {
             httpOnly: true,
-            secure: false,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'none',
           })
           .json({
             message: 'User created successfully.',
@@ -78,11 +79,24 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
     if (err instanceof PrismaClientKnownRequestError && err.code == 'P2002') {
       return res.status(401).json({
         message: 'username already exists.',
+        errorName: 'auth',
       });
     }
-    res
-      .status(500)
-      .json({ message: 'Something went wrong on the server', error: err });
+
+    if (err instanceof Error) {
+      return res.status(500).json({
+        message: err.message,
+        name: err.name,
+        errorName: 'other-server-error',
+        cause: err.cause,
+      });
+    }
+
+    res.status(500).json({
+      message: 'Something went wrong on the server',
+      errorName: 'other-server-error',
+      error: err,
+    });
     next(err);
   }
 };

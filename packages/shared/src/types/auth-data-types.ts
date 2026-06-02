@@ -5,26 +5,6 @@ interface SignUpData {
   password: string;
 }
 
-interface AuthError {
-  message: string;
-  errorName: 'auth';
-  name?: 'TokenExpiredError' | string;
-  stack?: string | undefined;
-}
-
-interface ValidationError {
-  message: string;
-  errorName: 'validation';
-  errorsArray: ValidationErrorObject[];
-}
-interface ValidationErrorObject {
-  type: string;
-  value: string;
-  msg: string;
-  path: string;
-  location: string;
-}
-
 interface LoginData {
   username: string;
   password: string;
@@ -42,6 +22,26 @@ interface AuthSuccessResponse {
     profileUrl?: string;
   };
 }
+interface AuthError {
+  message: string;
+  errorName: 'auth';
+  name?: 'TokenExpiredError' | string;
+  stack?: string | undefined;
+}
+
+interface ValidationErrorObject {
+  type: string;
+  value: string;
+  msg: string;
+  path: string;
+  location: string;
+}
+interface ValidationError {
+  message: string;
+  errorName: 'validation';
+  errorsArray: ValidationErrorObject[];
+}
+
 
 type AuthErrorResponse = ValidationError | AuthError;
 
