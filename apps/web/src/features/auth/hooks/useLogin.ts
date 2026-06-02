@@ -4,14 +4,21 @@ import login from '../api/login';
 
 import type {
   LoginData,
-  LoginAuthError,
   AuthSuccessResponse,
+  AuthErrorResponse,
 } from '@shared/src/types/auth-data-types';
+
+import type {
+  GlobalErrorObject,
+  CatchBlockError,
+} from '@shared/src/types/global-types';
 
 const useLogin = () => {
   // waiting to get result on form submission
   const [isWaiting, setIsWaiting] = useState(false);
-  const [error, setError] = useState<LoginAuthError | null>(null);
+  const [error, setError] = useState<
+    AuthErrorResponse | GlobalErrorObject | CatchBlockError | null
+  >(null);
   const navigate = useNavigate();
 
   const handleSubmit = async (data: LoginData) => {
@@ -22,18 +29,30 @@ const useLogin = () => {
       const response = await login(data);
 
       if (!response.ok) {
-        const loginError = (await response.json()) as LoginAuthError;
+        const loginError = (await response.json()) as
+          | AuthErrorResponse
+          | GlobalErrorObject;
         setError(loginError);
         return;
       }
 
       const authSuccessData = (await response.json()) as AuthSuccessResponse;
-      //todo: set this data into global state and redirect to homepage.
-      // todo: make pages to never render auth pages if user is logged in
+      console.log(authSuccessData);
+      // todo: store the user data  in Global user obj
+
       navigate('/');
     } catch (err) {
-      // todo: create a utils function that handles these errors
-      // todo: use the util for both signup and login
+      if (err instanceof Error) {
+        console.error(err.message);
+        console.log(err.stack);
+        setError({
+          errorName: 'catch-block',
+          message: err.message,
+          name: err.name,
+        });
+      }
+    } finally {
+      setIsWaiting(false);
     }
   };
 

@@ -19,4 +19,13 @@ const createUser = async ({
   return user;
 };
 
-export default { createUser };
+const findUser = async ({ username }: { username: string }) => {
+  const user = await prisma.user.findFirst({
+    where: {
+      username: username,
+    },
+  });
+  return user;
+};
+
+export default { createUser, findUser };

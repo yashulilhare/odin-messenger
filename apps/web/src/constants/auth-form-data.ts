@@ -60,6 +60,14 @@ const username = new FormField(
   'username',
 );
 
+const usernameForLogin = new FormField(
+  'text',
+  'username',
+  'username',
+  true,
+  'username',
+);
+
 const password = new FormField(
   'password',
   'password',
@@ -70,3 +78,4 @@ const password = new FormField(
 );
 
 export const signUpData = [firstName, lastName, username, password];
+export const loginData = [usernameForLogin, password];

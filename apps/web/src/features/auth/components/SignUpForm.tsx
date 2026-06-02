@@ -27,6 +27,9 @@ const SignUpForm = () => {
           });
         }}
       >
+        {error && error.errorName !== 'validation' && (
+          <p className="m-0 my-1 text-sm text-red-500">! {error.message}</p>
+        )}
         {signUpData.map((field) => {
           return (
             <FormGroup
