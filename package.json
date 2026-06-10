@@ -21,7 +21,7 @@
   "keywords": [],
   "author": "yashulilhare",
   "license": "ISC",
-  "packageManager": "pnpm@11.1.1",
+  "packageManager": "pnpm@11.5.3",
   "type": "module",
   "devDependencies": {
     "@eslint/js": "^9.39.4",
