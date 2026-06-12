@@ -1,19 +1,25 @@
-import { Outlet, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
-import Logo from '@/components/ui/Logo';
 import useInitAuth from '@/hooks/useInitAuth';
 import AppLoading from '@/components/loader/AppLoading';
 
+const headerLinks = [
+  { content: 'First Link', url: '' },
+  { content: 'second link', url: '' },
+];
+
 import { cn } from '@/utils/cn';
+import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
+
+const HomePage = React.lazy(() => import('@/pages/Homepage'));
+const LandingPage = React.lazy(() => import('@/pages/LandingPage'));
 
 const MainLayout = () => {
   const [customLoading, setCustomLoading] = useState(true);
   const { isLoading, initAuthData } = useInitAuth();
-  const navigate = useNavigate();
 
-  // use 5 second of custom delay to prevent flash of render for the loading screen.
+  // use 5 second of custom delay to prevent flash of render of loading screen.
   useEffect(() => {
     const key = setTimeout(() => {
       setCustomLoading(false);
@@ -22,14 +28,6 @@ const MainLayout = () => {
       clearTimeout(key);
     };
   }, []);
-
-  useEffect(() => {
-    if (initAuthData) {
-      if (!initAuthData.success) {
-        navigate('auth');
-      }
-    }
-  }, [initAuthData]);
 
   const showLoadingScreen = isLoading || customLoading;
 
@@ -40,14 +38,13 @@ const MainLayout = () => {
           'flex flex-col px-2 min-h-screen border-theme-orange bg-orange-50  md:p-4 xl:p-6',
         )}
       >
-        <header className="pb-2 ">
-          <Logo />
-        </header>
-
+        <Header headerLinks={headerLinks} />
         {showLoadingScreen ? (
           <AppLoading />
+        ) : initAuthData && initAuthData.success ? (
+          <HomePage />
         ) : (
-          <Outlet context={{ user: initAuthData }} />
+          <LandingPage />
         )}
       </div>
       {!showLoadingScreen && <Footer />}
