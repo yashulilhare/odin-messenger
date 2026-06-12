@@ -55,7 +55,7 @@ const LoginForm = () => {
           Log In
         </button>
         <p>
-          Doesn't have an account? <Link to={'/auth/signup'}>Sign Up here</Link>
+          Doesn't have an account? <Link to={'/signup'}>Sign Up here</Link>
         </p>
       </form>
     </>

@@ -11,9 +11,9 @@ const headerLinks = [
 import { cn } from '@/utils/cn';
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
+import { Outlet } from 'react-router-dom';
 
 const HomePage = React.lazy(() => import('@/pages/Homepage'));
-const LandingPage = React.lazy(() => import('@/pages/LandingPage'));
 
 const MainLayout = () => {
   const [customLoading, setCustomLoading] = useState(true);
@@ -44,7 +44,7 @@ const MainLayout = () => {
         ) : initAuthData && initAuthData.success ? (
           <HomePage />
         ) : (
-          <LandingPage />
+          <Outlet />
         )}
       </div>
       {!showLoadingScreen && <Footer />}

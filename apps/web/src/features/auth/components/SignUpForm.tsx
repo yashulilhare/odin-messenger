@@ -63,7 +63,7 @@ const SignUpForm = () => {
           Sign Up
         </button>
         <p>
-          Already have an account? <Link to="/auth/login">Login here</Link>
+          Already have an account? <Link to="/login">Login here</Link>
         </p>
       </form>
     </>

@@ -1,7 +1,7 @@
 import { cn } from '@/utils/cn';
 
 import ImagePlaceholder from '@/components/ui/ImagePlaceholder';
-import AuthButtons from '@/components/ui/AuthButtons';
+import { Outlet } from 'react-router-dom';
 
 const LandingPage = () => {
   return (
@@ -18,8 +18,8 @@ const LandingPage = () => {
             helps you connect with friends and people around the world. Create
             and join groups, share images and have a realtime chat.
           </p>
-          <AuthButtons />
         </div>
+        <Outlet />
         <ImagePlaceholder />
       </main>
     </>

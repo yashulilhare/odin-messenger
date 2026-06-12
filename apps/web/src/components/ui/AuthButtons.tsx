@@ -7,13 +7,13 @@ const AuthButtons = () => {
         content="Log In if you are a member"
         className={'bg-orange-300'}
         isLink={true}
-        path={'/auth//login'}
+        path={'/login'}
       />
       <AuthButton
         content="Sign Up if visiting for the first time"
         className={'-translate-y-4 z-1 bg-orange-400'}
         isLink={true}
-        path={'/auth/signup'}
+        path={'/signup'}
       />
       <AuthButton
         content="Try with a Demo Account"
