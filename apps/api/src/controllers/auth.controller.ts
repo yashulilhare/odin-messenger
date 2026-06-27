@@ -149,8 +149,8 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
         res
           .cookie('token', token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'none',
+            secure: process.env.NODE_ENV === 'PRODUCTION',
+            sameSite: process.env.NODE_ENV === 'PRODUCTION' ? 'none' : 'lax',
           })
           .json({
             message: 'User created successfully.',

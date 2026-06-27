@@ -1,7 +1,7 @@
 import signup from '../api/signup';
 import { useState } from 'react';
-import { useAuthStore } from '@/store/useAuthStore';
 import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 
 import type {
   AuthErrorResponse,
@@ -18,8 +18,8 @@ const useSignUp = () => {
   const [error, setError] = useState<
     AuthErrorResponse | GlobalErrorObject | CatchBlockError | null
   >(null);
+  const client = useQueryClient();
   const navigate = useNavigate();
-  const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
 
   const handleSignUp = async (data: SignUpData) => {
     setIsWaiting(true);
@@ -38,12 +38,10 @@ const useSignUp = () => {
 
       const authSuccessData = (await res.json()) as AuthSuccessResponse;
       console.log(authSuccessData);
-      // todo: use zustand and store user data in global state
-      // todo: then navigate to root page after changing the global state so HomePage should render instead of LandingPage
-      if (authSuccessData) {
-        setIsLoggedIn(true);
-      }
       navigate('/');
+      if (authSuccessData) {
+        client.invalidateQueries({ queryKey: ['initAuth'] });
+      }
     } catch (err) {
       if (err instanceof Error) {
         console.error(err.message);
