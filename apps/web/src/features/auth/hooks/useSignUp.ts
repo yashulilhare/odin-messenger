@@ -37,7 +37,6 @@ const useSignUp = () => {
       }
 
       const authSuccessData = (await res.json()) as AuthSuccessResponse;
-      console.log(authSuccessData);
       navigate('/');
       if (authSuccessData) {
         client.invalidateQueries({ queryKey: ['initAuth'] });

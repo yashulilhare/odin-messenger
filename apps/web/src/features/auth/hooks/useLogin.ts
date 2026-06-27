@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import login from '../api/login';
+import { useQueryClient } from '@tanstack/react-query';
 
 import type {
   LoginData,
@@ -20,6 +21,7 @@ const useLogin = () => {
     AuthErrorResponse | GlobalErrorObject | CatchBlockError | null
   >(null);
   const navigate = useNavigate();
+  const client = useQueryClient();
 
   const handleSubmit = async (data: LoginData) => {
     setIsWaiting(true);
@@ -38,9 +40,8 @@ const useLogin = () => {
 
       const authSuccessData = (await response.json()) as AuthSuccessResponse;
       console.log(authSuccessData);
-      // todo: store the user data  in Global user obj
-
       navigate('/');
+      client.invalidateQueries({ queryKey: ['initAuth'] });
     } catch (err) {
       if (err instanceof Error) {
         console.error(err.message);
