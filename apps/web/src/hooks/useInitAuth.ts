@@ -1,10 +1,13 @@
 import api from '@/lib/api';
 import { useState, useEffect } from 'react';
+import { useAuthStore } from '@/store/useAuthStore';
+
 import type { InitResponse } from '@shared/src/types/initResponse';
 
 const useInitAuth = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [initAuthData, setInitAuthData] = useState<InitResponse | null>(null);
+  const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -19,6 +22,9 @@ const useInitAuth = () => {
         });
         const data = (await res.json()) as InitResponse;
         setInitAuthData(data);
+        console.log('success ' + data.success);
+        console.log('message ' + data.message);
+        setIsLoggedIn(data.success);
         setIsLoading(false);
       } catch (errRes) {
         console.log(errRes);

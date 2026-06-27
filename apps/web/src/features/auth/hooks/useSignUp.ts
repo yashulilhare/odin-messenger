@@ -1,5 +1,7 @@
 import signup from '../api/signup';
 import { useState } from 'react';
+import { useAuthStore } from '@/store/useAuthStore';
+import { useNavigate } from 'react-router-dom';
 
 import type {
   AuthErrorResponse,
@@ -11,14 +13,13 @@ import type {
   CatchBlockError,
 } from '@shared/src/types/global-types';
 
-import { useNavigate } from 'react-router-dom';
-
 const useSignUp = () => {
   const [isWaiting, setIsWaiting] = useState(false);
   const [error, setError] = useState<
     AuthErrorResponse | GlobalErrorObject | CatchBlockError | null
   >(null);
   const navigate = useNavigate();
+  const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
 
   const handleSignUp = async (data: SignUpData) => {
     setIsWaiting(true);
@@ -39,7 +40,9 @@ const useSignUp = () => {
       console.log(authSuccessData);
       // todo: use zustand and store user data in global state
       // todo: then navigate to root page after changing the global state so HomePage should render instead of LandingPage
-
+      if (authSuccessData) {
+        setIsLoggedIn(true);
+      }
       navigate('/');
     } catch (err) {
       if (err instanceof Error) {
